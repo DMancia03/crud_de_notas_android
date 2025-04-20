@@ -16,16 +16,18 @@ class Student {
             Student("AA000000", "Diego", "Mancía"),
             Student("AA000001", "Yensy", "Cruz")
         )
-        val DATA_PREVIEW_2 : List<Student> = listOf(
-            Student("AA000002", "Juan", "López"),
-            Student("AA000003", "Angela", "Mejía")
-        )
 
         val TABLE_NAME = "estudiantes"
 
         val COL_CARNET = "carnet"
         val COL_NAME = "name"
         val COL_LASTNAME = "lastname"
+
+        val COLUMNS = arrayOf(
+            COL_CARNET,
+            COL_NAME,
+            COL_LASTNAME
+        )
 
         val CREATE_TABLE = "CREATE TABLE ${TABLE_NAME} (" +
                 "${COL_CARNET} varchar(8) primary key," +

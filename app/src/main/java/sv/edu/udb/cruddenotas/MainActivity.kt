@@ -23,8 +23,11 @@ import androidx.navigation.compose.rememberNavController
 import sv.edu.udb.cruddenotas.ui.theme.CrudDeNotasTheme
 import sv.edu.udb.cruddenotas.utils.StringsKotlin
 import androidx.compose.runtime.getValue
+import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
 import kotlinx.coroutines.CoroutineScope
+import sv.edu.udb.cruddenotas.components.ScreenFormStudent
 import sv.edu.udb.cruddenotas.components.ScreenSchoolGrades
 import sv.edu.udb.cruddenotas.components.ScreenStudent
 import sv.edu.udb.cruddenotas.components.student.StudentList
@@ -89,7 +92,27 @@ fun MainComponent(
             ){
                 composable(StringsKotlin.routeStudents){
                     ScreenStudent(
-                        modifier = modifier
+                        modifier = modifier,
+                        navController = navController
+                    )
+                }
+
+                composable(
+                    "${StringsKotlin.routeFormStudents}?action={action}&carnet={carnet}",
+                    arguments = listOf(
+                        navArgument("action"){
+                            type = NavType.StringType
+                            defaultValue = "create"
+                        },
+                        navArgument("carnet"){
+                            type = NavType.StringType
+                            defaultValue = ""
+                        }
+                    )
+                ){
+                    ScreenFormStudent(
+                        modifier = modifier,
+                        navController = navController
                     )
                 }
                 

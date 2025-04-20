@@ -15,6 +15,5 @@ fun ScreenSchoolGrades (
         modifier = modifier
     ) {
         Text("Pantalla 2")
-        StudentList(Student.DATA_PREVIEW, Modifier)
     }
 }

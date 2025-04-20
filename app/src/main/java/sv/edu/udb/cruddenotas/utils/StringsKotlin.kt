@@ -6,6 +6,7 @@ class StringsKotlin {
         const val ItemMenuStudents = "Estudiantes"
         const val ItemMenuSchoolGrades = "Calificaciones"
         const val routeStudents = "estudiantes"
+        const val routeFormStudents = "estudiantes_form"
         const val routeSchoolGrades = "calificaciones"
     }
 }
