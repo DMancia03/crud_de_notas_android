@@ -14,14 +14,16 @@ class SchoolGrade {
     }
 
     companion object{
-        val NOMBRE_TABLE = "notas"
+        val TABLE_NAME = "notas"
 
         val COL_ID = "id"
         //val COL_SUBJECT = "materia"
         val COL_CALIFICATION = "nota"
         val COL_CARNET = "carnet_estudiante"
 
-        val CREATE_TABLE = "CREATE TABLE ${NOMBRE_TABLE} (" +
+        val COLUMNS = arrayOf(COL_ID, COL_CALIFICATION, COL_CARNET)
+
+        val CREATE_TABLE = "CREATE TABLE ${TABLE_NAME} (" +
                 "${COL_ID} integer primary key autoincrement," +
                 //"${COL_SUBJECT} varchar(50) not null," +
                 "${COL_CALIFICATION} double not null," +
@@ -29,6 +31,6 @@ class SchoolGrade {
                 "FOREIGN KEY (${COL_CARNET}) REFERENCES ${Student.TABLE_NAME}(${Student.COL_CARNET})" +
                 ")"
 
-        val DROP_TABLE = "DROP TABLE ${NOMBRE_TABLE}"
+        val DROP_TABLE = "DROP TABLE ${TABLE_NAME}"
     }
 }

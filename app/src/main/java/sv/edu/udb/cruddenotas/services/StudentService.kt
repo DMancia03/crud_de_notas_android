@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import sv.edu.udb.cruddenotas.data.HelperDb
 import sv.edu.udb.cruddenotas.models.Student
+import java.sql.Struct
 
 class StudentService(context: Context) {
     private lateinit var helper : HelperDb
@@ -75,7 +76,16 @@ class StudentService(context: Context) {
             null
         )
 
-        return generarList(cursor).first()
+        if(cursor == null || cursor.count == 0){
+            return Student("", "", "")
+        }
+
+        cursor.moveToFirst()
+        return Student(
+            cursor.getString(0),
+            cursor.getString(1),
+            cursor.getString(2)
+        )
     }
 
     fun add(
