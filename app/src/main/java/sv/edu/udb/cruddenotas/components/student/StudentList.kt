@@ -21,7 +21,6 @@ fun StudentList(
     update : (n : NavHostController, s : Student) -> Unit,
     delete : (context: Context, students : SnapshotStateList<Student>, s : Student) -> Unit
 ){
-    Log.i("EXCEPTION", students.count().toString())
     if (students.count() > 0){
         LazyColumn {
             items(students) { student ->

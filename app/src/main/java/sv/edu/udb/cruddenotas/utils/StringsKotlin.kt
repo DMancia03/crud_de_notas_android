@@ -8,5 +8,6 @@ class StringsKotlin {
         const val routeStudents = "estudiantes"
         const val routeFormStudents = "estudiantes_form"
         const val routeSchoolGrades = "calificaciones"
+        const val routeSchoolGradeForm = "calificaciones_form"
     }
 }

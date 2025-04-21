@@ -27,6 +27,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import kotlinx.coroutines.CoroutineScope
+import sv.edu.udb.cruddenotas.components.ScreenFormSchoolGrades
 import sv.edu.udb.cruddenotas.components.ScreenFormStudent
 import sv.edu.udb.cruddenotas.components.ScreenSchoolGrades
 import sv.edu.udb.cruddenotas.components.ScreenStudent
@@ -118,7 +119,27 @@ fun MainComponent(
                 
                 composable(StringsKotlin.routeSchoolGrades){
                     ScreenSchoolGrades(
-                        modifier = modifier
+                        modifier = modifier,
+                        navController= navController
+                    )
+                }
+
+                composable(
+                    "${StringsKotlin.routeSchoolGradeForm}?action={action}&id={id}",
+                    arguments = listOf(
+                        navArgument("action"){
+                            type = NavType.StringType
+                            defaultValue = "create"
+                        },
+                        navArgument("id"){
+                            type = NavType.IntType
+                            defaultValue = 0
+                        }
+                    )
+                ){
+                    ScreenFormSchoolGrades(
+                        modifier = modifier,
+                        navController = navController
                     )
                 }
             }
