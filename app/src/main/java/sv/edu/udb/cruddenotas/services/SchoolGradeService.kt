@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import sv.edu.udb.cruddenotas.data.HelperDb
 import sv.edu.udb.cruddenotas.models.SchoolGrade
 import sv.edu.udb.cruddenotas.models.Student
@@ -21,7 +22,9 @@ class SchoolGradeService(context: Context) {
         schoolGrade: SchoolGrade
     ) : ContentValues {
         val contentValues = ContentValues()
-        contentValues.put(SchoolGrade.COL_ID, schoolGrade.Id)
+        if(schoolGrade.Id > 0){
+            contentValues.put(SchoolGrade.COL_ID, schoolGrade.Id)
+        }
         contentValues.put(SchoolGrade.COL_CALIFICATION, schoolGrade.Calification)
         contentValues.put(SchoolGrade.COL_CARNET, schoolGrade.CarnetStudent)
         return contentValues
@@ -84,7 +87,7 @@ class SchoolGradeService(context: Context) {
         return SchoolGrade(
             cursor.getInt(0),
             cursor.getDouble(1),
-            cursor.getString(3)
+            cursor.getString(2)
         )
     }
 
@@ -126,12 +129,12 @@ class SchoolGradeService(context: Context) {
     }
 
     fun delete(
-        schoolGrade: SchoolGrade
+        id : Int
     ) {
         db.delete(
             SchoolGrade.TABLE_NAME,
             "${SchoolGrade.COL_ID}=?",
-            arrayOf(schoolGrade.Id.toString())
+            arrayOf(id.toString())
         )
     }
 }
