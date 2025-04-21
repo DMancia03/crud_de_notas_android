@@ -2,6 +2,7 @@ package sv.edu.udb.cruddenotas.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -14,13 +15,17 @@ import androidx.compose.ui.platform.LocalContext
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = Pink80,
+    primaryContainer = BlueDark,
+    secondaryContainer = White
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
+    primary = Blue,
     secondary = PurpleGrey40,
-    tertiary = Pink40
+    tertiary = Pink40,
+    primaryContainer = BlueDark,
+    secondaryContainer = White
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -35,9 +40,9 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun CrudDeNotasTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,// isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,// true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -50,6 +55,8 @@ fun CrudDeNotasTheme(
         else -> LightColorScheme
     }
 
+    //Log.i("COLOR", colorScheme.primaryContainer.toString())
+    //Log.i("COLOR", GreenDark.toString())
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,

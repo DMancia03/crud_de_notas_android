@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import sv.edu.udb.cruddenotas.ui.theme.CrudDeNotasTheme
 import sv.edu.udb.cruddenotas.utils.StringsKotlin
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
@@ -89,7 +90,7 @@ fun MainComponent(
             NavHost(
                 navController = navController,
                 startDestination = StringsKotlin.routeStudents,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding).padding(all = 10.dp)
             ){
                 composable(StringsKotlin.routeStudents){
                     ScreenStudent(
