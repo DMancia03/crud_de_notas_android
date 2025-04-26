@@ -2,8 +2,11 @@ package sv.edu.udb.cruddenotas.components
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -14,11 +17,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import sv.edu.udb.cruddenotas.components.commons.ButtonCancel
+import sv.edu.udb.cruddenotas.components.commons.ButtonConfirm
 import sv.edu.udb.cruddenotas.models.Student
 import sv.edu.udb.cruddenotas.services.StudentService
 import sv.edu.udb.cruddenotas.ui.theme.CrudDeNotasTheme
@@ -29,7 +37,8 @@ fun ScreenFormStudent(
     navController : NavHostController
 ) {
     Column (
-        modifier = Modifier
+        modifier = Modifier.fillMaxHeight(),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         // Parametros por route
         var action : String? = ""
@@ -61,7 +70,9 @@ fun ScreenFormStudent(
 
         // Titulo del formulario
         Text(
-            text = if (action == "create") "Crear estudiante" else "Editar esudiante"
+            text = if (action == "create") "Crear estudiante" else "Editar esudiante",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
         )
 
         OutlinedTextField(
@@ -89,43 +100,74 @@ fun ScreenFormStudent(
             }
         )
 
-        Row {
-            Button({
-                // Cuando sea creacion
-                if(action == "create"){
-                    studentService.add(
-                        Student(carnet, name, lastname)
-                    )
-                    Toast.makeText(
-                        context,
-                        "Estudiante creado!!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }else{ // Cuando se edicion
-                    studentService.update(
-                        Student(carnet, name, lastname)
-                    )
-                    Toast.makeText(
-                        context,
-                        "Estudiante actualizado!!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            ButtonConfirm(
+                text = "Guardar",
+                action = {
+                    if(carnet.isNullOrBlank() || carnet.isNullOrEmpty()){
+                        Toast.makeText(
+                            context,
+                            "Debe ingresar el carnet del estudiante...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@ButtonConfirm
+                    }
+
+                    if(name.isNullOrBlank() || name.isNullOrEmpty()){
+                        Toast.makeText(
+                            context,
+                            "Debe ingresar el nombre del estudiante...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@ButtonConfirm
+                    }
+
+                    if(lastname.isNullOrBlank() || lastname.isNullOrEmpty()){
+                        Toast.makeText(
+                            context,
+                            "Debe ingresar el apellido del estudiante...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@ButtonConfirm
+                    }
+
+                    // Cuando sea creacion
+                    if(action == "create"){
+                        studentService.add(
+                            Student(carnet, name, lastname)
+                        )
+                        Toast.makeText(
+                            context,
+                            "Estudiante creado!!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }else{ // Cuando se edicion
+                        studentService.update(
+                            Student(carnet, name, lastname)
+                        )
+                        Toast.makeText(
+                            context,
+                            "Estudiante actualizado!!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    navController.navigateUp()
                 }
+            )
 
-                navController.navigateUp()
-            }) {
-                Text(
-                    text = "Guardar"
-                )
-            }
-
-            Button({
-                navController.navigateUp()
-            }) {
-                Text(
-                    text = "Cancelar"
-                )
-            }
+            ButtonCancel(
+                text = "Cancelar",
+                action = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

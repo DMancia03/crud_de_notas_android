@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,6 +24,7 @@ import sv.edu.udb.cruddenotas.ui.theme.CrudDeNotasTheme
 import sv.edu.udb.cruddenotas.utils.StringsKotlin
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import sv.edu.udb.cruddenotas.components.commons.ButtonInfo
 
 @Composable
 fun ScreenStudent (
@@ -42,15 +44,15 @@ fun ScreenStudent (
 
         students.addAll(studentService.getAll())
 
-        Button({
-            navController.navigate(
-                "${StringsKotlin.routeFormStudents}?action=create",
-            )
-        }) {
-            Text(
-                text = "Nuevo estudiante"
-            )
-        }
+        ButtonInfo(
+            text = "Nuevo estudiante",
+            action = {
+                navController.navigate(
+                    "${StringsKotlin.routeFormStudents}?action=create",
+                )
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
 
         StudentList(
             students,

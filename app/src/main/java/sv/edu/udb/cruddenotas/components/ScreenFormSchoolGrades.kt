@@ -1,8 +1,11 @@
 package sv.edu.udb.cruddenotas.components
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
@@ -17,8 +20,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import sv.edu.udb.cruddenotas.components.commons.ButtonCancel
+import sv.edu.udb.cruddenotas.components.commons.ButtonConfirm
+import sv.edu.udb.cruddenotas.components.commons.ButtonInfo
 import sv.edu.udb.cruddenotas.models.SchoolGrade
 import sv.edu.udb.cruddenotas.services.SchoolGradeService
 import sv.edu.udb.cruddenotas.services.StudentService
@@ -29,7 +38,10 @@ fun ScreenFormSchoolGrades (
     modifier: Modifier,
     navController: NavHostController
 ) {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxHeight(),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
         // Parametros por route
         var action : String? = ""
         var idToUpdate : Int? = 0
@@ -64,7 +76,9 @@ fun ScreenFormSchoolGrades (
 
         // Titulo del formulario
         Text(
-            text = if (action == "create") "Ingresar nota" else "Editar nota"
+            text = if (action == "create") "Ingresar nota" else "Editar nota",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
         )
 
         OutlinedTextField(
@@ -82,13 +96,13 @@ fun ScreenFormSchoolGrades (
         )
 
         Row {
-            Button({
-                setSelect(!select)
-            }) {
-                Text(
-                    text = carnet
-                )
-            }
+            ButtonInfo(
+                text = carnet,
+                action = {
+                    setSelect(!select)
+                },
+                modifier = Modifier
+            )
 
             DropdownMenu (
                 expanded = select,
@@ -106,39 +120,70 @@ fun ScreenFormSchoolGrades (
             }
         }
 
-        Row {
-            Button({
-                if(action == "create"){
-                    gradeService.add(SchoolGrade(0, calification.toDouble(), carnet))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            ButtonConfirm(
+                text = "Guardar",
+                action = {
+                    if(calification.toDoubleOrNull() == null){
+                        Toast.makeText(
+                            context,
+                            "Debe ingresar una calificación...",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                    Toast.makeText(
-                        context,
-                        "Nota ingresada!!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }else{
-                    gradeService.update(SchoolGrade(idToUpdate ?: 0, calification.toDouble(), carnet))
-                    Toast.makeText(
-                        context,
-                        "Nota actualizada!!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                        return@ButtonConfirm
+                    }
+
+                    if(calification.toDouble() < 0 || calification.toDouble() > 10){
+                        Toast.makeText(
+                            context,
+                            "La calificación debe estar entre 0 y 10...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@ButtonConfirm
+                    }
+
+                    if(carnet.isNullOrBlank() || carnet.isNullOrEmpty()){
+                        Toast.makeText(
+                            context,
+                            "Debe ingresar el carnet del estudiante...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@ButtonConfirm
+                    }
+
+                    if(action == "create"){
+                        gradeService.add(SchoolGrade(0, calification.toDouble(), carnet))
+
+                        Toast.makeText(
+                            context,
+                            "Nota ingresada!!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }else{
+                        gradeService.update(SchoolGrade(idToUpdate ?: 0, calification.toDouble(), carnet))
+                        Toast.makeText(
+                            context,
+                            "Nota actualizada!!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    navController.navigateUp()
                 }
+            )
 
-                navController.navigateUp()
-            }) {
-                Text(
-                    text = "Guardar"
-                )
-            }
-
-            Button({
-                navController.navigateUp()
-            }) {
-                Text(
-                    text = "Cancelar"
-                )
-            }
+            ButtonCancel(
+                text = "Cancelar",
+                action = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

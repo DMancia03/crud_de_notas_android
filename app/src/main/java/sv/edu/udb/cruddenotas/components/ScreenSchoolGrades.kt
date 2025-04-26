@@ -3,6 +3,7 @@ package sv.edu.udb.cruddenotas.components
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import sv.edu.udb.cruddenotas.components.commons.ButtonInfo
 import sv.edu.udb.cruddenotas.components.school_grades.GradeList
 import sv.edu.udb.cruddenotas.components.student.StudentList
 import sv.edu.udb.cruddenotas.models.SchoolGrade
@@ -35,15 +37,15 @@ fun ScreenSchoolGrades (
 
         grades.addAll(gradeService.getAll())
 
-        Button({
-            navController.navigate(
-                "${StringsKotlin.routeSchoolGradeForm}?action=create",
-            )
-        }) {
-            Text(
-                text = "Ingresar nota"
-            )
-        }
+        ButtonInfo(
+            text = "Ingresar nota",
+            action = {
+                navController.navigate(
+                    "${StringsKotlin.routeSchoolGradeForm}?action=create",
+                )
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
 
         GradeList(
             grades = grades,
