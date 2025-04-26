@@ -118,4 +118,10 @@ class StudentService(context: Context) {
             arrayOf(carnet),
         )
     }
+
+    fun alreadyExist(
+        carnet : String
+    ) : Boolean{
+        return getByCarnet(carnet).Carnet != ""
+    }
 }

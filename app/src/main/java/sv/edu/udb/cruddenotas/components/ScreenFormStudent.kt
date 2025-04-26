@@ -79,7 +79,7 @@ fun ScreenFormStudent(
             value = carnet,
             onValueChange = { setCarnet(it) },
             label = {
-                Text("Carnet del estudiante")
+                Text("Carnet del estudiante (8 car.)")
             },
             readOnly = action == "update"
         )
@@ -117,6 +117,16 @@ fun ScreenFormStudent(
                         return@ButtonConfirm
                     }
 
+                    if(carnet.length != 8){
+                        Toast.makeText(
+                            context,
+                            "Debe ingresar un carnet con 8 caracteres...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@ButtonConfirm
+                    }
+
                     if(name.isNullOrBlank() || name.isNullOrEmpty()){
                         Toast.makeText(
                             context,
@@ -139,6 +149,16 @@ fun ScreenFormStudent(
 
                     // Cuando sea creacion
                     if(action == "create"){
+                        if(studentService.alreadyExist(carnet)){
+                            Toast.makeText(
+                                context,
+                                "Ya existe un estudiante con ese carnet...",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            return@ButtonConfirm
+                        }
+
                         studentService.add(
                             Student(carnet, name, lastname)
                         )
