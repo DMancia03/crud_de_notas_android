@@ -16,7 +16,7 @@ class HelperDb (
 ) {
     companion object{
         val DB_NAME = "crud_notas"
-        val DB_VERSION = 2
+        val DB_VERSION = 1
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -25,6 +25,14 @@ class HelperDb (
     }
 
     override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
+        db.execSQL(SchoolGrade.DROP_TABLE)
+        db.execSQL(Student.DROP_TABLE)
+
+        db.execSQL(Student.CREATE_TABLE)
+        db.execSQL(SchoolGrade.CREATE_TABLE)
+    }
+
+    override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL(SchoolGrade.DROP_TABLE)
         db.execSQL(Student.DROP_TABLE)
 

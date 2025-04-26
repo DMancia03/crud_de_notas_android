@@ -4,18 +4,18 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import sv.edu.udb.cruddenotas.data.HelperDb
 import sv.edu.udb.cruddenotas.models.Student
-import java.sql.Struct
 
 class StudentService(context: Context) {
-    private lateinit var helper : HelperDb
-    private lateinit var db : SQLiteDatabase
+    private var helper : HelperDb
+    private var db : SQLiteDatabase
+    private var gradeService: SchoolGradeService
 
     init {
         helper = HelperDb(context)
         db = helper.writableDatabase
+        gradeService = SchoolGradeService(context)
     }
 
     fun generarContentValue(
@@ -39,11 +39,22 @@ class StudentService(context: Context) {
         cursor.moveToFirst()
 
         do{
-            students.add(Student(
+            var s : Student = Student(
                 cursor.getString(0),
                 cursor.getString(1),
                 cursor.getString(2)
-            ))
+            )
+
+
+            var grades = gradeService.getByCarnet(s.Carnet)
+
+            if(grades.count() > 0){
+                var units : Double = grades.sumOf { it.Units }
+                var notas : Double = grades.sumOf { it.Calification * it.Units }
+                s.CUM = if (units > 0) { (notas / units) } else 0.0
+            }
+
+            students.add(s)
         }while (cursor.moveToNext())
 
         return students

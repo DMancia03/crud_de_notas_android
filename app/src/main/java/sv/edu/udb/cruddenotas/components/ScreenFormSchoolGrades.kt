@@ -62,7 +62,7 @@ fun ScreenFormSchoolGrades (
         val students = studentService.getAll()
 
         // Nota default
-        var gradeDefault = SchoolGrade(0, 0.0, "")
+        var gradeDefault = SchoolGrade(0, 0.0, "", 0.0)
 
         // Cuando sea actualizacion de nota
         if(action == "update" && idToUpdate != null){
@@ -72,6 +72,7 @@ fun ScreenFormSchoolGrades (
         // Variables de estado en formulario
         var (calification, setCalification) = remember { mutableStateOf(gradeDefault.Calification.toString()) }
         var (carnet, setCarnet) = remember { mutableStateOf(gradeDefault.CarnetStudent) }
+        var (units, setUnits) = remember { mutableStateOf(gradeDefault.Units.toString()) }
         var (select, setSelect) = remember { mutableStateOf(false) }
 
         // Titulo del formulario
@@ -86,6 +87,16 @@ fun ScreenFormSchoolGrades (
             onValueChange = { setCalification(it) },
             label = {
                 Text("Nota:")
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            singleLine = true
+        )
+
+        OutlinedTextField(
+            value = units,
+            onValueChange = { setUnits(it) },
+            label = {
+                Text("Unidades valorativas:")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             singleLine = true
@@ -147,6 +158,26 @@ fun ScreenFormSchoolGrades (
                         return@ButtonConfirm
                     }
 
+                    if(units.toDoubleOrNull() == null){
+                        Toast.makeText(
+                            context,
+                            "Debe ingresar unidades valorativas...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@ButtonConfirm
+                    }
+
+                    if(units.toDouble() < 0){
+                        Toast.makeText(
+                            context,
+                            "Las unidades valorativas deben ser mayor o igual a 0...",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        return@ButtonConfirm
+                    }
+
                     if(carnet.isNullOrBlank() || carnet.isNullOrEmpty()){
                         Toast.makeText(
                             context,
@@ -158,7 +189,7 @@ fun ScreenFormSchoolGrades (
                     }
 
                     if(action == "create"){
-                        gradeService.add(SchoolGrade(0, calification.toDouble(), carnet))
+                        gradeService.add(SchoolGrade(0, calification.toDouble(), carnet, units.toDouble()))
 
                         Toast.makeText(
                             context,
@@ -166,7 +197,7 @@ fun ScreenFormSchoolGrades (
                             Toast.LENGTH_SHORT
                         ).show()
                     }else{
-                        gradeService.update(SchoolGrade(idToUpdate ?: 0, calification.toDouble(), carnet))
+                        gradeService.update(SchoolGrade(idToUpdate ?: 0, calification.toDouble(), carnet, units.toDouble()))
                         Toast.makeText(
                             context,
                             "Nota actualizada!!",

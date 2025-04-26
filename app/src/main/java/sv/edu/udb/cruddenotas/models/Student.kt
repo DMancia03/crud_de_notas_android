@@ -4,6 +4,7 @@ class Student {
     var Carnet : String = ""
     var Name : String = ""
     var Lastname : String = ""
+    var CUM : Double = 0.0 // Campo calculado
 
     constructor(_carnet : String, _name : String, _lastname : String){
         Carnet = _carnet

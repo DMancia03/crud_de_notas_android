@@ -27,6 +27,7 @@ class SchoolGradeService(context: Context) {
         }
         contentValues.put(SchoolGrade.COL_CALIFICATION, schoolGrade.Calification)
         contentValues.put(SchoolGrade.COL_CARNET, schoolGrade.CarnetStudent)
+        contentValues.put(SchoolGrade.COL_UNITS, schoolGrade.Units)
         return contentValues
     }
 
@@ -42,10 +43,11 @@ class SchoolGradeService(context: Context) {
         do{
             grades.add(
                 SchoolGrade(
-                cursor.getInt(0),
-                cursor.getDouble(1),
-                cursor.getString(2)
-            )
+                    cursor.getInt(0),
+                    cursor.getDouble(1),
+                    cursor.getString(2),
+                    cursor.getDouble(3)
+                )
             )
         }while (cursor.moveToNext())
 
@@ -80,14 +82,15 @@ class SchoolGradeService(context: Context) {
         )
 
         if(cursor == null || cursor.count == 0){
-            return SchoolGrade(0, 0.0, "")
+            return SchoolGrade(0, 0.0, "", 0.0)
         }
 
         cursor.moveToFirst()
         return SchoolGrade(
             cursor.getInt(0),
             cursor.getDouble(1),
-            cursor.getString(2)
+            cursor.getString(2),
+            cursor.getDouble(3)
         )
     }
 

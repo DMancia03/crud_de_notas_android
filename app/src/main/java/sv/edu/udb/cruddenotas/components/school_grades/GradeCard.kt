@@ -38,9 +38,16 @@ fun GradeCard (
                 text = "Carnet del estudiante: ${schoolGrade.CarnetStudent}"
             )
         }
+
         Row {
             Text(
                 text = "Nota: ${schoolGrade.Calification}"
+            )
+        }
+
+        Row {
+            Text(
+                text = "Unidades valorativas: ${schoolGrade.Units}"
             )
         }
 

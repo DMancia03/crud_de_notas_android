@@ -49,6 +49,13 @@ fun StudentCard(
             )
         }
 
+        Row {
+            Text(
+                text = "CUM: ${String.format("%.2f", student.CUM)}",
+                modifier = modifier
+            )
+        }
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
