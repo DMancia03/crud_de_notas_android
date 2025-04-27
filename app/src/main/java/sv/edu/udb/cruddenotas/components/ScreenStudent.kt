@@ -25,6 +25,7 @@ import sv.edu.udb.cruddenotas.utils.StringsKotlin
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import sv.edu.udb.cruddenotas.components.commons.ButtonInfo
+import sv.edu.udb.cruddenotas.services.SchoolGradeService
 
 @Composable
 fun ScreenStudent (
@@ -79,16 +80,32 @@ val deleteStudent : (
     context: Context,
     students: SnapshotStateList<Student>,
     student : Student
-        ) -> Unit = {
-            context, students, student ->
-            students.remove(student)
-            val studentService = StudentService(context)
-    studentService.delete(student.Carnet)
-    Toast.makeText(
-        context,
-        "Estudiante eliminado!!",
-        Toast.LENGTH_SHORT
-    ).show()
+        )
+-> Unit = {
+          context, students, student ->
+
+    val studentService = StudentService(context)
+    val gradeService = SchoolGradeService(context)
+
+    if(gradeService.getByCarnet(student.Carnet).isEmpty()){
+        students.remove(student)
+
+        studentService.delete(student.Carnet)
+
+        Toast.makeText(
+            context,
+            "Estudiante eliminado!!",
+            Toast.LENGTH_SHORT
+        ).show()
+    }else{
+        Toast.makeText(
+            context,
+            "No se elimino estudiante porque tiene notas asociadas...",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+
 }
 
 @Preview(showBackground = true)
